@@ -171,6 +171,101 @@ namespace Empleados.XML
             }
         }
 
+        private void ActualizarListaEmpleados()
+        {
+            listBoxEmpleados.Items.Clear();
+            foreach (var empleado in empleados)
+            {
+                listBoxEmpleados.Items.Add($"{empleado.Nombre} {empleado.Apellido} - {empleado.Puesto}");
+            }
+        }
 
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (listBoxEmpleados.SelectedIndex != -1)
+            {
+                Empleado empleadoSeleccionado = empleados[listBoxEmpleados.SelectedIndex];
+                txtNombre.Text = empleadoSeleccionado.Nombre;
+                txtApellido.Text = empleadoSeleccionado.Apellido;
+                txtEdad.Text = empleadoSeleccionado.Edad.ToString();
+                cmbPuesto.SelectedItem = empleadoSeleccionado.Puesto;
+
+                empleados.RemoveAt(listBoxEmpleados.SelectedIndex);
+                listBoxEmpleados.Items.RemoveAt(listBoxEmpleados.SelectedIndex);
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un empleado para editar.", "Advertencia", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (listBoxEmpleados.SelectedIndex != -1)
+            {
+                empleados.RemoveAt(listBoxEmpleados.SelectedIndex);
+                listBoxEmpleados.Items.RemoveAt(listBoxEmpleados.SelectedIndex);
+                MessageBox.Show("Empleado eliminado correctamente.", "Éxito", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un empleado para eliminar.", "Advertencia", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cmbPuesto.SelectedItem != null)
+                {
+                    string filtro = cmbPuesto.SelectedItem.ToString();
+                    var empleadosFiltrados = empleados.Where(emp => emp.Puesto == filtro).ToList();
+
+                    listBoxEmpleados.Items.Clear();
+                    foreach (var empleado in empleadosFiltrados)
+                    {
+                        listBoxEmpleados.Items.Add($"{empleado.Nombre} {empleado.Apellido} - {empleado.Puesto}");
+                    }
+
+                    if (empleadosFiltrados.Count == 0)
+                    {
+                        MessageBox.Show("No se encontraron empleados con el puesto seleccionado.", 
+                            "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Seleccione un puesto para filtrar.", 
+                        "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al filtrar los empleados: {ex.Message}", 
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Validación en tiempo real para el nombre
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+            if (!EsTextoValido(txtNombre.Text))
+            {
+                errorProvider.SetError(txtNombre, "Nombre inválido.");
+            }
+            else
+            {
+                errorProvider.SetError(txtNombre, string.Empty);
+            }
+        }
     }
 }
