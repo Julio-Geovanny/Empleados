@@ -80,6 +80,97 @@ namespace Empleados.XML
             cmbPuesto.SelectedIndex = -1;
         }
 
- 
+        // Guardar los datos de empleados en un archivo XML
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (empleados.Count > 0)
+            {
+                try
+                {
+                    dataManager.GuardarDatos(empleados, "empleados.xml");
+                    MessageBox.Show("Datos guardados correctamente.", "Éxito", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al guardar los datos: {ex.Message}", "Error", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No hay datos para guardar.", "Advertencia", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnAñadir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ValidarCampos())
+                {
+                    Empleado nuevoEmpleado = new Empleado
+                    {
+                        Nombre = txtNombre.Text,
+                        Apellido = txtApellido.Text,
+                        Edad = int.Parse(txtEdad.Text),
+                        Puesto = cmbPuesto.SelectedItem.ToString()
+                    };
+
+                    empleados.Add(nuevoEmpleado);
+                    listBoxEmpleados.Items.Add($"{nuevoEmpleado.Nombre} {nuevoEmpleado.Apellido} - {nuevoEmpleado.Puesto}");
+                    LimpiarCampos();
+                    MessageBox.Show("Empleado añadido correctamente.", "Éxito", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Error de formato: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Cargar los empleados desde un archivo XML
+        private void btnCargar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (File.Exists("empleados.xml"))
+                {
+                    empleados = dataManager.LeerDatos("empleados.xml");
+
+                    if (empleados.Count > 0)
+                    {
+                        ActualizarListaEmpleados();
+                        MessageBox.Show("Datos cargados correctamente.", "Éxito", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("El archivo empleados.xml está vacío.", "Advertencia", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("El archivo empleados.xml no existe.", "Advertencia", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
     }
 }
