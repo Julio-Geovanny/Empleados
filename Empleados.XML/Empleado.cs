@@ -8,6 +8,9 @@ namespace Empleados.XML
 {
     public class Empleado
     {
-    
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public int Edad { get; set; }
+        public string Puesto { get; set; }
     }
 }
