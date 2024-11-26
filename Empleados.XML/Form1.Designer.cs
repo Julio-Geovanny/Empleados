@@ -321,7 +321,24 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cmbPuesto;
         private System.Windows.Forms.TextBox txtEdad;
-
+        private System.Windows.Forms.TextBox txtApellido;
+        private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.Label labelPuesto;
+        private System.Windows.Forms.Label labelEdad;
+        private System.Windows.Forms.Label labelApellido;
+        private System.Windows.Forms.Button btnSalir;
+        private System.Windows.Forms.Button btnCargar;
+        private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.Button btnAñadir;
+        private System.Windows.Forms.Button btnEditar;
+        private System.Windows.Forms.Button btnFiltrar;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.ListBox listBoxEmpleados;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.ErrorProvider errorProvider3;
+        private System.Windows.Forms.ErrorProvider errorProvider4;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 
