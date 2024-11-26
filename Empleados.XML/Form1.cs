@@ -14,5 +14,72 @@ namespace Empleados.XML
 {
     public partial class Form1 : Form
     {
+        private List<Empleado> empleados;
+        private EmpleadoDataManager dataManager;
+        private ErrorProvider errorProvider = new ErrorProvider();
+        private List<string> puestos = new List<string> 
+        { "Gerente", "Desarrollador", "Diseñador", "Analista", "Soporte" };
+
+        public Form1()
+        {
+            InitializeComponent();
+            empleados = new List<Empleado>();
+            dataManager = new EmpleadoDataManager();
+            cmbPuesto.DataSource = puestos;
+        }
+
+        private bool ValidarCampos()
+        {
+            bool esValido = true;
+            errorProvider.Clear();
+
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) || !EsTextoValido(txtNombre.Text))
+            {
+                errorProvider1.SetError(txtNombre, "Por favor, ingrese un nombre válido.");
+                esValido = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtApellido.Text) || !EsTextoValido(txtApellido.Text))
+            {
+                errorProvider2.SetError(txtApellido, "Por favor, ingrese un apellido válido.");
+                esValido = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtEdad.Text) || !int.TryParse(txtEdad.Text, out int edad) || edad < 18 || edad > 100)
+            {
+                errorProvider3.SetError(txtEdad, "Por favor, ingrese una edad válida.");
+                esValido = false;
+            }
+
+            if (cmbPuesto.SelectedItem == null)
+            {
+                errorProvider4.SetError(cmbPuesto, "Por favor, seleccione un puesto.");
+                esValido = false;
+            }
+
+            return esValido;
+        }
+
+        private bool EsTextoValido(string texto)
+        {
+            foreach (char c in texto)
+            {
+                if (!char.IsLetter(c) && c != ' ')
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void LimpiarCampos()
+        {
+            txtNombre.Clear();
+            txtApellido.Clear();
+            txtEdad.Clear();
+            cmbPuesto.SelectedIndex = -1;
+        }
+
+ 
     }
 }
